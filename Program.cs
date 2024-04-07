@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Numerics;
-
-
-namespace BENJAMINADETIBAST10036774POE
+﻿namespace BENJAMINADETIBAST10036774POE
 {
-	class MyRecipe
+    class MyRecipe
 	{
 
 		public string[] name;
@@ -24,9 +19,9 @@ namespace BENJAMINADETIBAST10036774POE
 			Console.WriteLine("Hey, how many ingredients would you like to store?");
 			num = Convert.ToInt32(Console.ReadLine());
 
-			quantity = new int[num];
-			name = new string[num];
-			uOM = new string[num];
+				quantity = new int[num];
+				name = new string[num];
+				uOM = new string[num];
 
 			for (int i = 0; i < num; i++)
 			{
@@ -177,7 +172,8 @@ namespace BENJAMINADETIBAST10036774POE
 					"\n1.Store Receipe" +
 					"\n2.Scale Receipe" +
 					"\n3.Reset Receipe" +
-					"\n4.Clear Receipe"
+					"\n4.Clear Receipe" +
+					"\n5.Print Receipe"
 				);
 
 			int choice = Convert.ToInt32(Console.ReadLine());
@@ -202,7 +198,44 @@ namespace BENJAMINADETIBAST10036774POE
 
 		public void clearReceipe()
 		{
-			Console.WriteLine("ff");
+			Console.WriteLine("Would you like to clear all data entry" +
+				"\n1. Yes" +"\n0. No");
+
+			int choice = Convert.ToInt32(Console.ReadLine());
+
+			if (choice == 1)
+			{
+                quantity = new int[0];
+                name = new string[0];
+                uOM = new string[0];
+				steps= new object[0];
+
+				Console.WriteLine("All data has been cleared");
+				menu();
+			
+            }
+			else
+			{
+				Console.WriteLine("Data unchanged");
+
+                Console.WriteLine("Receipe for:" + title);
+                for (int i = 0; i < quantity.Length; i++)
+                {
+
+                    Console.WriteLine(quantity[i] + " " + uOM[i] + " of " + name[i] + " used");
+                }
+				Console.WriteLine("");
+                Console.WriteLine("Steps:");
+                for (int i = 0; i < quantity.Length; i++)
+                {
+                    int stepNumber = i + 1;
+                    Console.WriteLine("Step " + stepNumber + ": " + steps[i]);
+                }
+
+            }
+
+
+			
 		}
 
 		public void launch() {
