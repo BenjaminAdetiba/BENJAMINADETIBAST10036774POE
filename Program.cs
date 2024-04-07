@@ -13,7 +13,7 @@ namespace BENJAMINADETIBAST10036774POE
 		public string[] uOM;
 		public string[] title;
 		public Object[] steps;
-		public int factor;
+		//public int factor;
 
 		public void storeRecipe()
 		{
