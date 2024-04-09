@@ -28,16 +28,42 @@
 				Console.WriteLine("Please enter the name of ingredient");
 				name[i] = Console.ReadLine();
 
-				Console.WriteLine("Please enter the quantity of " + name[i]);
-				quantity[i] = Convert.ToInt32(Console.ReadLine());
 
-				Console.WriteLine("Please enter the unit of Measurement");
-				uOM[i] = Console.ReadLine();
+				Console.WriteLine("Please enter the quantity of " + name[i] +
+					"\n1. As Unit(Singles) " + "\n2. As per(weight)");
 
-				Console.WriteLine(name[i] + ":" + quantity[i] + " " + uOM[i] + " of " + name[i] + " is needed");
+				int select = Convert.ToInt32(Console.ReadLine());
+
+				if (select == 1)
+				{
+				
+					Console.WriteLine("Please enter how many " + " " + $"{name[i]}'s" + "are needed");
+					quantity[i] = Convert.ToInt32(Console.ReadLine());
+					if (quantity[i] >= 2) 
+					{	
+					Console.WriteLine("Please enter the unit of Measurement is");
+					uOM[i] = Console.ReadLine();
+                     Console.WriteLine(name[i] + ":" + quantity[i] + " " + uOM[i] + $"{name[i]}'s" + " are needed");
+                    } else
+				
+					Console.WriteLine(name[i] + ":" + quantity[i] + " " + uOM[i] + name[i] + " is needed");
+				}
+				else
+				{
+					Console.WriteLine("Please enter the weight of the " + $"{name[i]}" + "" + "needed");
+					quantity[i] = Convert.ToInt32(Console.ReadLine());
+
+					if (quantity[i] >= 2)
+					Console.WriteLine("Please enter the unit of Measurement is");
+					uOM[i] = Console.ReadLine();
+					Console.WriteLine($"{name[i]}" + ":" + quantity[i] + " " + uOM[i] + " of " + $"{name[i]}s" + " are needed");
+				}
+
+
 			}
 
-			Console.WriteLine("Ingredients for: " + title + " has successfully been stored");
+
+                Console.WriteLine("Ingredients for: " + title + " has successfully been stored");
 
 			Console.WriteLine("Please indicate how many steps are in the recipe");
 			int length = Convert.ToInt32(Console.ReadLine());
