@@ -280,6 +280,7 @@
             }
             else
             {
+                Console.WriteLine("Thank you very much for using Sweet Savoury");
                 System.Environment.Exit(0);
             }
 
