@@ -11,7 +11,8 @@
         public int factor;
 
         public void storeRecipe()
-        {
+        { // The class takes a value stored as num as the the loop control variable and the loop runs and takes in the 
+            //data: name,size and unit of Measurement
             int num;
             Console.WriteLine("Please enter the name of the recipe");
             string title = Console.ReadLine();
@@ -191,36 +192,6 @@
             }
             menu();
         }
-        public void menu()
-        {
-            Console.WriteLine
-                    ("Welcome to Sweet Savory" +
-                    "\nPlease choose from 1 of the following" +
-                    "\n1.Store Receipe" +
-                    "\n2.Scale Receipe" +
-                    "\n3.Reset Receipe" +
-                    "\n4.Clear Receipe" +
-                    "\n5.Print Receipe"
-                );
-
-            int choice = Convert.ToInt32(Console.ReadLine());
-
-            switch (choice)
-            {
-                case 1:
-                    storeRecipe();
-                    break;
-                case 2:
-                    scaleReceipe();
-                    break;
-                case 3:
-                    resetReceipe();
-                    break;
-                case 4:
-                    clearReceipe();
-                    break;
-            }
-        }
 
 
         public void clearReceipe()
@@ -264,6 +235,38 @@
 
 
         }
+
+        public void menu()
+        {
+            Console.WriteLine
+                    ("Welcome to Sweet Savory" +
+                    "\nPlease choose from 1 of the following" +
+                    "\n1.Store Receipe" +
+                    "\n2.Scale Receipe" +
+                    "\n3.Reset Receipe" +
+                    "\n4.Clear Receipe" +
+                    "\n5.Print Receipe"
+                );
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    storeRecipe();
+                    break;
+                case 2:
+                    scaleReceipe();
+                    break;
+                case 3:
+                    resetReceipe();
+                    break;
+                case 4:
+                    clearReceipe();
+                    break;
+            }
+        }
+
 
         public void launch()
         {
