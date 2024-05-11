@@ -1,299 +1,415 @@
-﻿namespace BENJAMINADETIBAST10036774POE
+﻿using System.Collections.Generic;
+using static MainCLass;
+internal class MainCLass
 {
-    class MyRecipe
+
+    private static Dictionary<string, Recipe> recipes;
+
+
+    public delegate void NumberHandler(int number);
+
+    public class Caloriechecker
     {
+        public event NumberHandler NumberEvent;
 
-        public string[] name;
-        public int[] quantity;
-        public string[] uOM;
-        public string[] title;
-        public Object[] steps;
-        public int factor;
-
-        public void storeRecipe()
-        { // The class takes a value stored as num as the the loop control variable and the loop runs and takes in the 
-            //data: name,size and unit of Measurement
-            int num;
-            Console.WriteLine("Please enter the name of the recipe");
-            string title = Console.ReadLine();
-
-            Console.WriteLine("Hey, how many ingredients would you like to store?");
-            num = Convert.ToInt32(Console.ReadLine());
-
-            quantity = new int[num];
-            name = new string[num];
-            uOM = new string[num];
-
-            for (int i = 0; i < num; i++)
+        public void checknumber(int number)
+        {
+            if (NumberEvent != null)
             {
-                Console.WriteLine("Please enter the name of ingredient");
-                name[i] = Console.ReadLine();
-
-
-                Console.WriteLine("Please enter the quantity of " + name[i] +
-                    "\n1. As Unit(Singles) " + "\n2. As per(weight)");
-
-                int select = Convert.ToInt32(Console.ReadLine());
-
-                if (select == 1)
-                {
-
-                    Console.WriteLine("Please enter how many " + " " + $"{name[i]}'s" + "are needed");
-                    quantity[i] = Convert.ToInt32(Console.ReadLine());
-                    if (quantity[i] >= 2)
-                    {
-                        Console.WriteLine("Please enter the unit of Measurement is");
-                        uOM[i] = Console.ReadLine();
-                        Console.WriteLine(name[i] + ":" + quantity[i] + " " + uOM[i] + $"{name[i]}'s" + " are needed");
-                    }
-                    else
-
-                        Console.WriteLine(name[i] + ":" + quantity[i] + " " + uOM[i] + name[i] + " is needed");
-                }
-                else
-                {
-                    Console.WriteLine("Please enter the weight of the " + $"{name[i]}" + "" + "needed");
-                    quantity[i] = Convert.ToInt32(Console.ReadLine());
-
-                    if (quantity[i] >= 2)
-                        Console.WriteLine("Please enter the unit of Measurement is");
-                    uOM[i] = Console.ReadLine();
-                    Console.WriteLine($"{name[i]}" + ":" + quantity[i] + " " + uOM[i] + " of " + $"{name[i]}s" + " are needed");
-                }
-
-
+                NumberEvent(number);
             }
+        }
+    }
 
+    static void Checkcalorie(int number)
+    {
+        if (number > 300)
+        {
+            Console.WriteLine("The total calories if this receipe exceeds 300");
+        }
+        else
+        {
+            Console.WriteLine("Calories ae within normal range");
+        }
+    }
+    public static void GetIngredients()
+    {
+        string rName = default;
+        string name = default;
+        string UoM = default;
+        double Qty = default;
+        int totalCalories = 0;
+        string FoodGroup = "";
+        int foodchoice = 0;
+        int calories;
+        string calories1;
+        string num1;
+        int num;
+        int select;
 
-            Console.WriteLine("Ingredients for: " + title + " has successfully been stored");
+        List<Ingredient> totalIngredients = new List<Ingredient>();
 
-            Console.WriteLine("Please indicate how many steps are in the recipe");
-            int length = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Enter the name of the Recipe: ", "Please enter a valid Recipe name!");
+        rName = Console.ReadLine().ToLower();
 
-            steps = new string[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                int stepNumber = i + 1;
-                Console.WriteLine("Step " + stepNumber);
-                Console.WriteLine("Please enter the description");
-                steps[i] = Console.ReadLine();
-            }
-
-            Console.WriteLine("Receipe for:" + title);
-            Console.WriteLine("Ingredients used:");
-
-            for (int i = 0; i < num; i++)
-            {
-                Console.WriteLine(quantity[i] + " " + uOM[i] + " of " + name[i] + " used");
-            }
-
-            Console.WriteLine("Steps:");
-            for (int i = 0; i < length; i++)
-            {
-                int stepNumber = i + 1;
-                Console.WriteLine("Step " + stepNumber + ": " + steps[i]);
-            }
-            menu();
-
+        while (rName == "" || rName == null)
+        {
+            Console.WriteLine("Please re-enter a valid recipe name");
+            rName = Console.ReadLine().ToLower();
         }
 
-        public void scaleReceipe()
+        while (true)
         {
+            Console.WriteLine("Hey, how many ingredients would you like to store?: ");
 
-            if (quantity.Length != null)
+            num1 = Console.ReadLine();
+            try
+            {
+                num = Convert.ToInt32(num1);
+                break;
+            }
+            catch (Exception e)
             {
 
-                Console.WriteLine("Receipe for:" + title);
-                Console.WriteLine("Ingredients used:");
-
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    Console.WriteLine(quantity[i] + " " + uOM[i] + " of " + name[i] + " used");
-                }
-
-                Console.WriteLine("Steps:");
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    int stepNumber = i + 1;
-                    Console.WriteLine("Step " + stepNumber + ": " + steps[i]);
-                }
-
-                Console.WriteLine("Please enter the factor you wish to scale your receipe");
-                factor = Convert.ToInt32(Console.ReadLine());
-
-                Console.WriteLine("Scaled Receipe: ");
-
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    int answer = factor * quantity[i];
-                    Console.WriteLine(answer + " " + uOM[i] + " of " + name[i] + " used");
-                }
-
-                Console.WriteLine("Steps:");
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    int stepNumber = i + 1;
-                    Console.WriteLine("Step " + stepNumber + ": " + steps[i]);
-                }
-
+                Console.WriteLine("Please try again, Enter the number of ingredients");
 
             }
-            else
-            {
-                Console.WriteLine("No receipe has been stored");
-            }
-
-            menu();
-
-        }
-        public void resetReceipe()
-        {
-            if (quantity.Length != null)
-            {
-                Console.WriteLine("Scaled Receipe: ");
-
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    int answer = factor * quantity[i];
-                    Console.WriteLine(answer + " " + uOM[i] + " of " + name[i] + " used");
-                }
-
-                Console.WriteLine("Would you like to reset the scale back to 1, Enter 1(Yes) or 2(No)");
-
-                int option = Convert.ToInt32(Console.ReadLine());
-
-                if (option == 1)
-                {
-                    Console.WriteLine("Receipe for:" + title);
-                    for (int i = 0; i < quantity.Length; i++)
-                    {
-
-                        Console.WriteLine(quantity[i] + " " + uOM[i] + " of " + name[i] + " used");
-                    }
-
-
-                }
-                else
-
-                {
-                    Console.WriteLine("Receipe Still unchangesd");
-                    for (int i = 0; i < quantity.Length; i++)
-                    {
-                        int answer = factor * quantity[i];
-                        Console.WriteLine(answer + " " + uOM[i] + " of " + name[i] + " used");
-                    }
-
-                }
-            }
-            else
-            {
-                Console.WriteLine("No receipe has been stored");
-            }
-            menu();
         }
 
 
-        public void clearReceipe()
+        for (int i = 0; i < num; i++)
         {
-            Console.WriteLine("Would you like to clear all data entry" +
-                "\n1. Yes" + "\n0. No");
+            Console.WriteLine("Please enter the Name of ingredient: ");
 
-            int choice = Convert.ToInt32(Console.ReadLine());
+            name = Console.ReadLine();
 
-            if (choice == 1)
+            while (name == "" || name == null)
             {
-                quantity = new int[0];
-                name = new string[0];
-                uOM = new string[0];
-                steps = new object[0];
-
-                Console.WriteLine("All data has been cleared");
-                menu();
-
-            }
-            else
-            {
-                Console.WriteLine("Data unchanged");
-
-                Console.WriteLine("Receipe for:" + title);
-                for (int i = 0; i < quantity.Length; i++)
-                {
-
-                    Console.WriteLine(quantity[i] + " " + uOM[i] + " of " + name[i] + " used");
-                }
-                Console.WriteLine("");
-                Console.WriteLine("Steps:");
-                for (int i = 0; i < quantity.Length; i++)
-                {
-                    int stepNumber = i + 1;
-                    Console.WriteLine("Step " + stepNumber + ": " + steps[i]);
-                }
-
+                Console.WriteLine("Please re-enter a valid recipe name");
+                name = Console.ReadLine().ToLower();
             }
 
 
 
-        }
+            while (true)
+            {
+                Console.WriteLine($"Please enter the quantity of {name}\n1. As Unit(Singles)\n2. As per(weight)\nEnter a valid option");
 
-        public void menu()
-        {
-            Console.WriteLine
-                    ("Welcome to Sweet Savory" +
-                    "\nPlease choose from 1 of the following" +
-                    "\n1.Store Receipe" +
-                    "\n2.Scale Receipe" +
-                    "\n3.Reset Receipe" +
-                    "\n4.Clear Receipe" +
-                    "\n5.Print Receipe"
-                );
 
-            int choice = Convert.ToInt32(Console.ReadLine());
+                string select1 = Console.ReadLine();
+                try
+                {
+                    select = Convert.ToInt32(select1);
+                    break;
+                }
+                catch (Exception e)
+                {
 
-            switch (choice)
+                    Console.WriteLine($"Please enter the quantity of {name}\n1. As Unit(Singles)\n2. As per(weight)\nEnter a valid option");
+
+
+                }
+            }
+
+
+            switch (select)
             {
                 case 1:
-                    storeRecipe();
+                    Console.WriteLine($"Please enter how many {name} are needed: ");
+
+                    Qty = Convert.ToDouble(Console.ReadLine());
+                    Console.WriteLine("Please enter the unit of measurement: ");
+
+                    UoM = Console.ReadLine();
+
+                    if (Qty >= 2 && UoM.EndsWith("s"))
+                    {
+                        Console.WriteLine($"{name}: {Qty} {UoM} are needed");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name}: {Qty} {UoM} of {name} is needed");
+                    }
+                    // selectValid = true;
                     break;
+
                 case 2:
-                    scaleReceipe();
-                    break;
-                case 3:
-                    resetReceipe();
-                    break;
-                case 4:
-                    clearReceipe();
+                    Console.WriteLine($"Please enter the weight of {name} needed: ");
+                    if (!double.TryParse(Console.ReadLine(), out Qty))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please enter a valid weight.");
+                        Console.ResetColor();
+                        continue; // Restart the loop to prompt for input again
+                    }
+
+                    Console.WriteLine("Please enter the unit of measurement: ");
+                    UoM = Console.ReadLine();
+
+                    if (Qty >= 2 && UoM.EndsWith("s"))
+                    {
+                        Console.WriteLine($"{name}: {Qty} {UoM} of {name} are needed");
+                    }
+                    else if (Qty >= 2)
+                    {
+                        Console.WriteLine($"{name} : {Qty} {UoM} of {name}'s are needed");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name}: {Qty} {UoM} of {name} is needed");
+                    }
+                    // selectValid = true;
                     break;
             }
+
+
+            while (true)
+            {
+                Console.WriteLine($"Please enter the number of calories of the {name}");
+
+
+                calories1 = Console.ReadLine();
+                try
+                {
+                    calories = Convert.ToInt32(calories1);
+                    break;
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine("Please try again, Enter the number of ingredients");
+
+                }
+            }
+
+            //totalCalories = 0 + calories;
+
+            bool group = false;
+            do
+            {
+
+                Console.WriteLine($"Please select a food group of the {name}"
+                    + "\n1.Protein" +
+                    "\n2.Carbohydrates" +
+                    "\n3.Fruits" +
+                    "\n4.Vegetables" +
+                    "\n5.Fats and Oil" +
+                    "\n6.Dairy" +
+                    "\n7.Grains" +
+                    "\n8.Added sugar");
+
+
+                foodchoice = Convert.ToInt32(Console.ReadLine());
+
+                switch (foodchoice)
+                {
+                    case 1:
+                        FoodGroup = "Protein";
+                        group = true;
+                        break;
+                    case 2:
+                        FoodGroup = "Carbohydrates";
+                        group = true;
+                        break;
+                    case 3:
+                        FoodGroup = "Fruits";
+                        group = true;
+                        break;
+                    case 4:
+                        FoodGroup = "Vegetables";
+                        group = true;
+                        break;
+                    case 5:
+                        FoodGroup = "Fats and Oils";
+                        group = true;
+                        break;
+                    case 6:
+                        FoodGroup = "Fats and Oils";
+                        group = true;
+                        break;
+                    case 7:
+                        FoodGroup = "Sweets and Sugary Foods";
+                        group = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please select a valid option.");
+                        break;
+                }
+
+            }
+
+            while (group == false);
+
+
+            totalIngredients.Add(new Ingredient(name, UoM, Qty, calories, FoodGroup));
+
+
+
+            //Caloriechecker c = new Caloriechecker();
+
+            //  c.checknumber(totalCalories);
+
+            Console.WriteLine("Please enter the amount of steps: ");
+
+            int stepCount = Convert.ToInt32(Console.ReadLine());
+
+            List<string> steps = new List<string>();
+            for (int j = 0; j < stepCount; j++)
+            {
+                Console.WriteLine($"Please enter a instruction for Step {j + 1}");
+                string step = Console.ReadLine();
+                steps.Add(step);
+            }
+
+            Recipe newRecipe = new Recipe(rName, totalIngredients, steps);
+            recipes.Add(rName, newRecipe);
+            Console.WriteLine("The recipe has successfully been stored");
+
+
+            Console.WriteLine($"Receipe: {rName}");
+
+            foreach (var j in recipes)
+            {
+                Console.WriteLine(j.ToString().Replace("[", "").Replace("]", ""));
+                Console.WriteLine("");
+            }
+
         }
 
+        menu();
 
-        public void launch()
+    }
+
+
+
+    public static void ScaleReceipe()
+    {
+        int j = 1;
+
+        if (recipes.Count >= 1)
         {
-            Console.WriteLine("Welcome to Sweet Savoury" + "\nPress 1 to launch menu or anything else to quit");
-
-            int start = Convert.ToInt32(Console.ReadLine());
-
-            if (start == 1)
+            foreach (var key in recipes.Keys)
             {
-                menu();
+                Console.WriteLine($"Recipe {j}, {key.ToString()}");
+                j++;
+            }
+            Console.WriteLine("Please enter the name of the recipe you would like to modify");
+
+            string search = Console.ReadLine().ToLower();
+
+            if (recipes.ContainsKey(search))
+            {
+                Console.WriteLine("Recipe found");
+                foreach (var key in recipes.Keys)
+                {
+                    Console.WriteLine($"Recipe {key.ToString()}");
+                    j++;
+                }
             }
             else
             {
-                Console.WriteLine("Thank you very much for using Sweet Savoury");
-                System.Environment.Exit(0);
+                Console.WriteLine("No match found in the system");
             }
 
+            menu();
         }
-        class Program
+        else
         {
-            static void Main(string[] args)
+            Console.WriteLine("No recipes have been stored");
+            menu();
+        }
+    }
+
+
+    public static void menu()
+    {
+        Console.WriteLine
+                ("Welcome to Sweet Savory" +
+                "\nPlease choose from 1 of the following" +
+                "\n1.Store Receipe" +
+                "\n2.Scale Receipe" +
+                "\n3.Reset Receipe" +
+                "\n4.Clear Receipe" +
+                "\n5.Print Receipe"
+            );
+
+        bool validChoice = false;
+        do
+        {
+            string choice = Console.ReadLine() ?? "";
+            if (choice == string.Empty)
             {
-
-
-                MyRecipe recipe = new MyRecipe();
-                recipe.launch();
+                // handle
             }
+            int ichoice = 0;
+            try
+            {
+                ichoice = Convert.ToInt32(choice);
+
+            }
+            catch
+            {
+                Console.WriteLine("");
+            }
+
+            switch (ichoice)
+            {
+                case 1:
+                    GetIngredients();
+                    validChoice = true;
+                    break;
+                case 2:
+                    ScaleReceipe();
+                    validChoice = true;
+                    break;
+                case 3:
+                    //   resetReceipe();
+                    validChoice = true;
+                    break;
+                case 4:
+                    //  clearReceipe();
+                    validChoice = true;
+                    break;
+                case 5:
+                // StoredReceipes();
+                default:
+                    Console.WriteLine("Invalid Choice, Please try again");
+                    break;
+            }
+        } while (!validChoice);
+    }
+
+
+    public static void launch()
+    {
+        Console.WriteLine("Welcome to Sweet Savoury" + "\nPress 1 to launch menu or anything else to quit");
+
+        int start = Convert.ToInt32(Console.ReadLine());
+
+        if (start == 1)
+        {
+            menu();
+        }
+        else
+        {
+            Console.WriteLine("Thank you very much for using Sweet Savoury");
+            System.Environment.Exit(0);
+        }
+
+    }
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+
+            recipes = new Dictionary<string, Recipe>();
+
+            // launch();
+
+            GetIngredients();
         }
     }
 }
