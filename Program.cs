@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using static MainCLass;
 internal class MainCLass
 {
 
-    private static Dictionary<string, Recipe> recipes;
+    public static Dictionary<string, Recipe> recipes;
 
-
+    public static double factor;
+    public static int stepCount;
     public delegate void NumberHandler(int number);
 
     public class Caloriechecker
@@ -14,24 +17,23 @@ internal class MainCLass
 
         public void checknumber(int number)
         {
-            if (NumberEvent != null)
+            NumberEvent?.Invoke(number);
+        }
+
+
+        public void Checkcalorie(int number)
+        {
+            if (number > 300)
             {
-                NumberEvent(number);
+                Console.WriteLine("This receipe exceeds 300 calories");
+            }
+            else
+            {
+                Console.WriteLine("Calories ae within normal range");
             }
         }
     }
 
-    static void Checkcalorie(int number)
-    {
-        if (number > 300)
-        {
-            Console.WriteLine("The total calories if this receipe exceeds 300");
-        }
-        else
-        {
-            Console.WriteLine("Calories ae within normal range");
-        }
-    }
     public static void GetIngredients()
     {
         string rName = default;
@@ -115,12 +117,34 @@ internal class MainCLass
             switch (select)
             {
                 case 1:
-                    Console.WriteLine($"Please enter how many {name} are needed: ");
 
-                    Qty = Convert.ToDouble(Console.ReadLine());
+                    while (true)
+                    {
+                        Console.WriteLine($"Please enter how many {name} are needed: ");
+
+                        string Qty1 = Console.ReadLine();
+
+                        try
+                        {
+                            Qty = Convert.ToInt32(Qty1);
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine("Please try again, Enter the number of ingredients");
+
+                        }
+                    }
+                    ///////////////////////////
                     Console.WriteLine("Please enter the unit of measurement: ");
 
                     UoM = Console.ReadLine();
+                    while (UoM == "" || UoM == null)
+                    {
+                        Console.WriteLine("Please re-enter a valid recipe name");
+                        UoM = Console.ReadLine().ToLower();
+                    }
 
                     if (Qty >= 2 && UoM.EndsWith("s"))
                     {
@@ -134,14 +158,26 @@ internal class MainCLass
                     break;
 
                 case 2:
-                    Console.WriteLine($"Please enter the weight of {name} needed: ");
-                    if (!double.TryParse(Console.ReadLine(), out Qty))
+                    //   Console.WriteLine($"Please enter the weight of {name} needed: ");
+                    while (true)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Please enter a valid weight.");
-                        Console.ResetColor();
-                        continue; // Restart the loop to prompt for input again
+                        Console.WriteLine($"Please enter the weight of {name}  needed: ");
+
+                        string Qty1 = Console.ReadLine();
+
+                        try
+                        {
+                            Qty = Convert.ToInt32(Qty1);
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine("Please try again, Enter the number of ingredients");
+
+                        }
                     }
+
 
                     Console.WriteLine("Please enter the unit of measurement: ");
                     UoM = Console.ReadLine();
@@ -182,13 +218,11 @@ internal class MainCLass
                 }
             }
 
-            //totalCalories = 0 + calories;
-
+            totalCalories = 0 + calories;
             bool group = false;
             do
             {
-
-                Console.WriteLine($"Please select a food group of the {name}"
+                Console.WriteLine($"Please select a food group:"
                     + "\n1.Protein" +
                     "\n2.Carbohydrates" +
                     "\n3.Fruits" +
@@ -199,45 +233,56 @@ internal class MainCLass
                     "\n8.Added sugar");
 
 
-                foodchoice = Convert.ToInt32(Console.ReadLine());
+                string foodchoice1 = Console.ReadLine();
 
-                switch (foodchoice)
+                try
                 {
-                    case 1:
-                        FoodGroup = "Protein";
-                        group = true;
-                        break;
-                    case 2:
-                        FoodGroup = "Carbohydrates";
-                        group = true;
-                        break;
-                    case 3:
-                        FoodGroup = "Fruits";
-                        group = true;
-                        break;
-                    case 4:
-                        FoodGroup = "Vegetables";
-                        group = true;
-                        break;
-                    case 5:
-                        FoodGroup = "Fats and Oils";
-                        group = true;
-                        break;
-                    case 6:
-                        FoodGroup = "Fats and Oils";
-                        group = true;
-                        break;
-                    case 7:
-                        FoodGroup = "Sweets and Sugary Foods";
-                        group = true;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please select a valid option.");
-                        break;
+                    foodchoice = Convert.ToInt32(foodchoice1);
+                    switch (foodchoice)
+                    {
+                        case 1:
+                            FoodGroup = "Protein";
+                            group = true;
+                            break;
+                        case 2:
+                            FoodGroup = "Carbohydrates";
+                            group = true;
+                            break;
+                        case 3:
+                            FoodGroup = "Fruits";
+                            group = true;
+                            break;
+                        case 4:
+                            FoodGroup = "Vegetables";
+                            group = true;
+                            break;
+                        case 5:
+                            FoodGroup = "Fats and Oils";
+                            group = true;
+                            break;
+                        case 6:
+                            FoodGroup = "Dairy";
+                            group = true;
+                            break;
+                        case 7:
+                            FoodGroup = "Grains";
+                            group = true;
+                            break;
+                        case 8:
+                            FoodGroup = "Added sugar";
+                            group = true;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please select a valid option.");
+                            break;
+                    }
                 }
 
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please try again, Please select a valid choice");
+                }
             }
-
             while (group == false);
 
 
@@ -245,13 +290,38 @@ internal class MainCLass
 
 
 
-            //Caloriechecker c = new Caloriechecker();
 
-            //  c.checknumber(totalCalories);
+            Caloriechecker c = new Caloriechecker();
+
+            c.checknumber(totalCalories);
+
+            c.NumberEvent += c.Checkcalorie;
+
+
+            c.checknumber(totalCalories);
+
 
             Console.WriteLine("Please enter the amount of steps: ");
 
-            int stepCount = Convert.ToInt32(Console.ReadLine());
+
+
+            while (true)
+            {
+                Console.WriteLine("Please enter the amount of stepsa ");
+                string step1 = Console.ReadLine();
+                try
+                {
+                    stepCount = Convert.ToInt32(step1);
+                    break;
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine("Please try again, Enter the number of steps");
+
+                }
+            }
+
 
             List<string> steps = new List<string>();
             for (int j = 0; j < stepCount; j++)
@@ -274,51 +344,124 @@ internal class MainCLass
                 Console.WriteLine("");
             }
 
+
+            menu();
+
         }
-
-        menu();
-
     }
 
 
 
-    public static void ScaleReceipe()
+    public static void ScaleReceipe(Recipe recipe)
     {
         int j = 1;
+        //  var sortedDict = recipes.OrderBy(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+        var sortedList = recipes.OrderBy(kvp => kvp.Key).ToList();
 
-        if (recipes.Count >= 1)
+        foreach (var i in sortedList)
         {
-            foreach (var key in recipes.Keys)
-            {
-                Console.WriteLine($"Recipe {j}, {key.ToString()}");
-                j++;
-            }
-            Console.WriteLine("Please enter the name of the recipe you would like to modify");
+            Console.WriteLine(j + $"\n{i}");
+            j++;
+        }
 
-            string search = Console.ReadLine().ToLower();
+        Console.WriteLine("Please Enter the name of the recipe you wish to scale");
 
-            if (recipes.ContainsKey(search))
+        string find = Console.ReadLine();
+
+        if (recipes.ContainsKey(find))
+        {
+            Recipe recipe1 = recipes[find];
+            Console.WriteLine(recipe);
+
+            while (true)
             {
-                Console.WriteLine("Recipe found");
-                foreach (var key in recipes.Keys)
+                Console.WriteLine("Please enter the scale of the recipe ");
+                string factor1 = Console.ReadLine();
+                try
                 {
-                    Console.WriteLine($"Recipe {key.ToString()}");
-                    j++;
+                    factor = Convert.ToDouble(factor1);
+                    break;
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine("Please try again, Enter a valid scale factor");
                 }
             }
-            else
+
+            foreach (var ingredient in recipe.ingredients)
             {
-                Console.WriteLine("No match found in the system");
+                ingredient.Quantity *= factor;
             }
 
-            menu();
+            Console.WriteLine(recipe);
         }
         else
         {
-            Console.WriteLine("No recipes have been stored");
-            menu();
+            Console.WriteLine("The recipe you are looking for does not exist");
         }
+
+
+
+        menu();
+
+
+        // double factor = Convert.ToDouble(Console.ReadLine());
+
+
+
     }
+
+    public static void printRecipe()
+    {
+        Console.WriteLine(
+            "Please choose from the following options:" +
+            "\n1. Print in alphabetical order" +
+            "\n2. Search and display");
+
+        int option = Convert.ToInt32(Console.ReadLine());
+        bool order = false;
+
+        do
+        {
+            if (option == 1)
+            {
+                var sortedList = recipes.OrderBy(kvp => kvp.Key).ToList();
+
+                Console.WriteLine("Recipes in alphabetical order:");
+                foreach (var recipe in sortedList)
+                {
+                    Console.WriteLine($"{recipe.Key}: {recipe.Value}");
+                }
+
+                order = true;
+                break;
+            }
+            else if (option == 2)
+            {
+                Console.WriteLine("Please enter the name of the recipe:");
+                string find = Console.ReadLine();
+
+                if (recipes.ContainsKey(find))
+                {
+                    Console.WriteLine($"{find}: {recipes[find]}");
+                }
+                else
+                {
+                    Console.WriteLine("The recipe does not exist");
+                }
+
+                order = true;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please choose again.");
+                option = Convert.ToInt32(Console.ReadLine());
+            }
+        } while (!order);
+    }
+
 
 
     public static void menu()
@@ -367,11 +510,12 @@ internal class MainCLass
                     validChoice = true;
                     break;
                 case 4:
-                    //  clearReceipe();
+                    //   clearReceipe();
                     validChoice = true;
                     break;
                 case 5:
-                // StoredReceipes();
+                    printRecipe();
+                    break;
                 default:
                     Console.WriteLine("Invalid Choice, Please try again");
                     break;

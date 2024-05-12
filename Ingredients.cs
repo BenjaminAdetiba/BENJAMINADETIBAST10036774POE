@@ -73,8 +73,10 @@ public class Recipe
 
 
 
+
     public override string ToString()
     {
+
         string asString = $"{name}\n\n---Ingredients---\n";
         for (int i = 0; i != totalIngredients.Count; i++)
         {
@@ -87,6 +89,9 @@ public class Recipe
         }
         return asString;
     }
+
+
+
 
 
 }
