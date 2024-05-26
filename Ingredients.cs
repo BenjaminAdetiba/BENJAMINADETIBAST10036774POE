@@ -1,97 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public delegate void CalorieMessageDelegate(string recipeName);
+
+
 public class Ingredient
 {
-    public string Name
-    {
-        get; set;
-    }
+    public string Name { get; set; }
+    public double Quantity { get; set; }
+    public string UOM { get; set; }
+    public double Calories { get; set; }
+    public string FoodGroup { get; set; }
+}
 
-    public string UoM
-    {
-        get; set;
-    }
-
-    public double Quantity
-    {
-        get; set;
-    }
-
-    public int Calories
-    {
-        get; set;
-    }
-
-    public string FoodGroup
-    {
-        get; set;
-    }
-
-    //   public int totalCalories {
-    //     get; set;
-    // }
-
-    public Ingredient(string name, string uoM, double quantity, int calories, string foodGroup)
-    {
-        this.Name = name;
-        this.UoM = uoM;
-        this.Quantity = quantity;
-        this.Calories = calories;
-        this.FoodGroup = foodGroup;
-        // this.totalCalories = totalCalories;
-    }
-
-    public override string ToString()
-    {
-        return $"{this.Quantity} {this.UoM} of {this.Name} ({this.Calories} Calories) ({this.FoodGroup})";
-    }
-
-
+public class Step
+{
+    public string Description { get; set; }
 }
 
 
 public class Recipe
 {
-    public string name;
-    public List<Ingredient> ingredients = new List<Ingredient>();
-    public List<string> steps;
+    public string Name { get; set; }
+    public List<Ingredient> Ingredients { get; set; }
+    public List<Step> Steps { get; set; }
+    public double TotalCalories { get; private set; }
 
-    // public string foodGroup;
-    private string rName;
-    private List<Ingredient> totalIngredients;
-
-
-
-    public Recipe(string rName, List<Ingredient> totalIngredients, List<string> steps)
+    // Constructor
+    public Recipe()
     {
-        this.rName = rName;
-        this.totalIngredients = totalIngredients;
-        this.steps = steps;
-
+        Ingredients = new List<Ingredient>();
+        Steps = new List<Step>();
     }
 
-
-
-
-    public override string ToString()
+    // Calculate total calories for the recipe
+    public void CalculateTotalCalories()
     {
-
-        string asString = $"{name}\n\n---Ingredients---\n";
-        for (int i = 0; i != totalIngredients.Count; i++)
+        TotalCalories = 0;
+        foreach (var ingredient in Ingredients)
         {
-            asString += $"{i + 1}: {totalIngredients[i]}\n";
+            TotalCalories += ingredient.Calories;
         }
-        asString += "\n---Steps---\n";
-        for (int i = 0; i < steps.Count; i++)
-        {
-            asString += $"{i + 1}: {steps[i]}\n";
-        }
-        return asString;
     }
 
+    public void ScaleRecipe(double scaleFactor)
+    {
+        foreach (var ingredient in Ingredients)
+        {
+            ingredient.Quantity *= scaleFactor;
+            // Update calories after scaling quantity
+            ingredient.Calories *= scaleFactor;
+        }
 
-
-
+        // Recalculate total calories after scaling
+        CalculateTotalCalories();
+    }
 
 }
